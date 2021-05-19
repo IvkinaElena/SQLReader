@@ -1,0 +1,36 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SQLReader {
+    public static void main(String[] args) throws FileNotFoundException {
+        System.out.println("Input absolute path file separated by commas:");
+        Scanner input = new Scanner(System.in);
+        String inputPath = input.nextLine();
+        String pathArray[] =  inputPath.split(",");
+
+        for(String path: pathArray) {
+            try (BufferedReader br =
+                         new BufferedReader(new FileReader(path.trim()))) {
+                String statement  = br.readLine();
+                while (statement != null) {
+                    if (statement.substring(statement.length() - 1, statement.length()).equals(";")) {
+                          if (statement.contains("CREATE TABLE")) {
+                            SQLParser newTable = new SQLParser(statement);
+                            System.out.println(newTable.getTableParams());
+                        }
+                        statement = br.readLine();
+                    } else
+                        statement += br.readLine();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+}
