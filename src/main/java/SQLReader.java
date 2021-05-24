@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SQLReader {
@@ -11,6 +10,7 @@ public class SQLReader {
         Scanner input = new Scanner(System.in);
         String inputPath = input.nextLine();
         String pathArray[] =  inputPath.split(",");
+        SQLParser newSQLParser = new SQLParser();
 
         for(String path: pathArray) {
             try (BufferedReader br =
@@ -19,8 +19,10 @@ public class SQLReader {
                 while (statement != null) {
                     if (statement.substring(statement.length() - 1, statement.length()).equals(";")) {
                           if (statement.contains("CREATE TABLE")) {
-                            SQLParser newTable = new SQLParser(statement);
-                            System.out.println(newTable.getTableParams());
+                            SQLNextLineParser newTable = new SQLNextLineParser(statement);
+                            if (!newSQLParser.getAllTableNames().contains(newTable.getTableName())) {
+                                newSQLParser.addTables(newTable.getTableName(), newTable.getMapOfNameAndType());
+                            }
                         }
                         statement = br.readLine();
                     } else
@@ -31,6 +33,8 @@ public class SQLReader {
                 e.printStackTrace();
             }
         }
+
+        newSQLParser.getAllCreatedTableVWithColumns();
 
     }
 }
