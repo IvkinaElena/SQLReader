@@ -6,14 +6,13 @@ public class SQLParser {
     public SQLParser() {
         this.allTables = new HashMap<>();
     }
+
     public void addTables(String table, Map<String, String> params) {
         this.allTables.put(table, params);
     }
 
     public void getAllCreatedTableVWithColumns() {
-        for (Map.Entry<String, Map<String, String>> entry : this.allTables.entrySet()) {
-            System.out.println(entry.getKey() + ":" + entry.getValue());
-        }
+        this.allTables.forEach((k, v) -> System.out.println(k + " : " + v));
     }
 
     public Set<String> getAllTableNames() {

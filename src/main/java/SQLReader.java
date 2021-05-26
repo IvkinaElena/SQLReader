@@ -9,16 +9,16 @@ public class SQLReader {
         System.out.println("Input absolute path file separated by commas:");
         Scanner input = new Scanner(System.in);
         String inputPath = input.nextLine();
-        String pathArray[] =  inputPath.split(",");
+        String pathArray[] = inputPath.split(",");
         SQLParser newSQLParser = new SQLParser();
 
-        for(String path: pathArray) {
+        for (String path : pathArray) {
             try (BufferedReader br =
                          new BufferedReader(new FileReader(path.trim()))) {
-                String statement  = br.readLine();
+                String statement = br.readLine();
                 while (statement != null) {
                     if (statement.substring(statement.length() - 1, statement.length()).equals(";")) {
-                          if (statement.contains("CREATE TABLE")) {
+                        if (statement.contains("CREATE TABLE")) {
                             SQLNextLineParser newTable = new SQLNextLineParser(statement);
                             if (!newSQLParser.getAllTableNames().contains(newTable.getTableName())) {
                                 newSQLParser.addTables(newTable.getTableName(), newTable.getMapOfNameAndType());
