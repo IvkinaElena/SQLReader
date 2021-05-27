@@ -3,8 +3,7 @@ import java.util.*;
 public class SQLNextLineParser {
     private String tableName;
     private HashMap<String, String> mapOfNameAndType;
-    private String[] constraint =
-            {"CONSTRAINT",
+    private Set<String> constraint = new HashSet<> (Arrays.asList( "CONSTRAINT",
             "CHECK",
             "UNIQUE",
             "PRIMARY",
@@ -13,7 +12,7 @@ public class SQLNextLineParser {
             "MATCH",
             "DEFERRABLE",
             "NOT",
-            "ON"};
+            "ON"));
 
     public SQLNextLineParser(String statement) {
         this.mapOfNameAndType = new HashMap<>();
@@ -35,7 +34,7 @@ public class SQLNextLineParser {
             //первое слово - название столбца
             String columnName = paramsTable.split(" ")[0];
             //проверяем, не является ли название столбца служебным словом
-            if (!Arrays.asList(this.constraint).contains(columnName.toUpperCase())) {
+            if (!this.constraint.contains(columnName.toUpperCase())) {
                 //удаляем название столбца из строки с параметрами таблицы
                 paramsTable = paramsTable.replaceAll(columnName, "").trim();
                 //второе слово - название типа данных, берем значение до запятой или до конца строки
