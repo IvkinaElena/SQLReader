@@ -1,9 +1,11 @@
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SQLNextLineParser {
     private String tableName;
     private HashMap<String, String> mapOfNameAndType;
-    private Set<String> constraint = new HashSet<> (Arrays.asList( "CONSTRAINT",
+    private Set<String> constraint = Stream.<String>of("CONSTRAINT",
             "CHECK",
             "UNIQUE",
             "PRIMARY",
@@ -12,7 +14,8 @@ public class SQLNextLineParser {
             "MATCH",
             "DEFERRABLE",
             "NOT",
-            "ON"));
+            "ON")
+            .collect(Collectors.toCollection(HashSet::new));
 
     public SQLNextLineParser(String statement) {
         this.mapOfNameAndType = new HashMap<>();
@@ -64,6 +67,15 @@ public class SQLNextLineParser {
 
     public HashMap<String, String> getMapOfNameAndType() {
         return this.mapOfNameAndType;
+    }
+
+    public static boolean statementContainsCreateTable(String statements) {
+        statements = statements.toLowerCase();
+        statements = statements.trim();
+        statements = statements.replaceAll("/n", "");
+        if(statements.matches("^create(\\s*)table(.*)")) {
+            return true;
+        } return false;
     }
 
 }

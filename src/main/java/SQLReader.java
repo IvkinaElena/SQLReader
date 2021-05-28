@@ -17,8 +17,8 @@ public class SQLReader {
                          new BufferedReader(new FileReader(path.trim()))) {
                 String statement = br.readLine();
                 while (statement != null) {
-                    if (statement.substring(statement.length() - 1, statement.length()).equals(";")) {
-                        if (statement.contains("CREATE TABLE")) {
+                    if (statement.endsWith(";")) {
+                        if (SQLNextLineParser.statementContainsCreateTable(statement)) {
                             SQLNextLineParser newTable = new SQLNextLineParser(statement);
                             if (!newSQLParser.getAllTableNames().contains(newTable.getTableName())) {
                                 newSQLParser.addTables(newTable.getTableName(), newTable.getMapOfNameAndType());
