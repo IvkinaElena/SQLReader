@@ -8,7 +8,7 @@ public class SQLParser {
     }
 
     public void addTables(String table, Map<String, String> params) {
-        this.allTables.put(table, params);
+        this.allTables.put(table.trim(), params);
     }
 
     public void getAllCreatedTableVWithColumns() {
@@ -19,4 +19,7 @@ public class SQLParser {
         return this.allTables.keySet();
     }
 
+    public Map<String, Map<String, String>> getAllTables() {
+        return allTables;
+    }
 }
