@@ -2,7 +2,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Locale;
 import java.util.Map;
 
 public class ClassesProducer {
@@ -10,7 +9,7 @@ public class ClassesProducer {
     private Path packagePath = Paths.get("src/main/java/generatedClasses");
 
     public void createNewClass(String table, Map<String, String> params) {
-        table = className(table);
+        table = SnakeCaseToCamelCase.className(table);
         String absPath = this.packagePath.toAbsolutePath().normalize().toString();
         File p = new File(absPath);
         try{
@@ -25,7 +24,7 @@ public class ClassesProducer {
                 writer.write(classDoc);
                 params.forEach((k,v) -> {
                     try {
-                        writer.write("@Getter @Setter private " + typeField(v) + " " + fieldName(k) + ";\n");
+                        writer.write("@Getter @Setter private " + typeField(v) + " " + SnakeCaseToCamelCase.fieldName(k) + ";\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -37,28 +36,9 @@ public class ClassesProducer {
         }
     }
 
-    //Название класса форматируем под CamelCase
-    public String className(String tableName) {
-        String newClassName = tableName.toLowerCase();
-        newClassName = capitalize(newClassName);
-        if(newClassName.indexOf("_") > 0) {
-            String wordArr[] = newClassName.split("_");
-            newClassName = "";
-            for(String word: wordArr) {
-                newClassName += capitalize(word);
-            }
-        }
-        return newClassName;
-    }
-
-    //Форматируем названия полей класса под CamelCase
-    public String fieldName(String columnName) {
-        String newFieldName = className(columnName).toLowerCase();
-        return newFieldName;
-    }
 
     //Определение типа
-    public String typeField(String dataType){
+    private String typeField(String dataType){
         if (dataType.toLowerCase().contains("char") ||
                 dataType.toLowerCase().contains("varchar") ||
                 dataType.toLowerCase().contains("text")) {
@@ -72,12 +52,6 @@ public class ClassesProducer {
             return "double";
         }
         return "Object";
-    }
-
-    //метод изменяет первую букву слова в верхний регистр
-    private String capitalize(String str) {
-        str = str.substring(0,1).toUpperCase() + str.substring(1);
-        return str;
     }
 
     private String addImportInstant(Map<String, String> params) {
