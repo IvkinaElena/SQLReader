@@ -1,4 +1,6 @@
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class SnakeCaseToCamelCase {
 
@@ -7,11 +9,10 @@ public class SnakeCaseToCamelCase {
         String newClassName = tableName.toLowerCase();
         newClassName = capitalize(newClassName);
         if(newClassName.indexOf("_") > 0) {
-            String wordArr[] = newClassName.split("_");
-            newClassName = "";
-            for(String word: wordArr) {
-                newClassName += capitalize(word);
-            }
+            String[] wordArr = newClassName.split("_");
+            newClassName = Arrays.stream(wordArr)
+                            .map(SnakeCaseToCamelCase::capitalize)
+                            .collect(Collectors.joining());
         }
         return newClassName;
     }
