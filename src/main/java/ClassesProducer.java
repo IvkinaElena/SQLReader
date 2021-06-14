@@ -1,30 +1,31 @@
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Map;
 
 public class ClassesProducer {
-
-    private Path packagePath = Paths.get("src/main/java/generatedClasses");
+    private final String path = "elena.ivkina.directory";
+    private final Path packagePath = Paths.get("src/main/java/" + winPathWithPackage(path));
 
     public void createNewClass(String table, Map<String, String> params) {
-        table = SnakeCaseToCamelCase.className(table);
+        String className = SnakeCaseToCamelCase.className(table);
         String absPath = this.packagePath.toAbsolutePath().normalize().toString();
-        File p = new File(absPath);
         try{
-            p.mkdir();
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(absPath + "/" + table + ".java"))) {
-                String classDoc = MessageFormat.format("package generatedClasses;\n" +
+            Files.createDirectories(Paths.get(absPath));
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(absPath + "/" + className + ".java"))) {
+                String classDoc = MessageFormat.format("package {0};\n" +
                         addImportInstant(params) +
                         "import lombok.Getter;\n" +
                         "import lombok.Setter;\n" +
                         "\n" +
-                        "public class {0} '{'\n", table);
+                        "public class {1} '{'\n", path, className);
                 writer.write(classDoc);
                 params.forEach((k,v) -> {
                     try {
-                        writer.write("@Getter @Setter private " + typeField(v) + " " + SnakeCaseToCamelCase.fieldName(k) + ";\n");
+                        writer.write(MessageFormat.format("@Getter @Setter private {0} {1};\n",
+                                typeField(v), SnakeCaseToCamelCase.fieldName(k)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -44,12 +45,12 @@ public class ClassesProducer {
                 dataType.toLowerCase().contains("text")) {
             return "String";
         } else if(dataType.toLowerCase().contains("int")) {
-            return "int";
+            return "Integer";
         } else if(dataType.toLowerCase().contains("date") ||
                 dataType.toLowerCase().contains("time")) {
             return "Instant";
-        } else if(dataType.toLowerCase().contains("doable")) {
-            return "double";
+        } else if(dataType.toLowerCase().contains("double")) {
+            return "Double";
         }
         return "Object";
     }
@@ -61,6 +62,10 @@ public class ClassesProducer {
             }
         }
         return "";
+    }
+
+    private static String winPathWithPackage(String packageDirectory) {
+        return packageDirectory.replaceAll("\\.", "/");
     }
 
 

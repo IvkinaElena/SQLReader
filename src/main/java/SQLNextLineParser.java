@@ -4,8 +4,8 @@ import java.util.stream.Stream;
 
 public class SQLNextLineParser {
     private String tableName;
-    private HashMap<String, String> mapOfNameAndType;
-    private Set<String> constraint = Stream.<String>of("CONSTRAINT",
+    private final HashMap<String, String> mapOfNameAndType;
+    private final Set<String> constraint = Stream.of("CONSTRAINT",
             "CHECK",
             "UNIQUE",
             "PRIMARY",
@@ -25,7 +25,6 @@ public class SQLNextLineParser {
 
     private void setTableName(String statement) {
         statement = statement.replaceAll("CREATE TABLE", "").trim();
-        String name = statement.substring(0, statement.indexOf("("));
         this.tableName = statement.substring(0, statement.indexOf("("));
     }
 
@@ -73,9 +72,7 @@ public class SQLNextLineParser {
         statements = statements.toLowerCase();
         statements = statements.trim();
         statements = statements.replaceAll("/n", "");
-        if(statements.matches("^create(\\s*)table(.*)")) {
-            return true;
-        } return false;
+        return statements.matches("^create(\\s*)table(.*)");
     }
 
 }

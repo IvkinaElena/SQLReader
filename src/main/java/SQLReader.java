@@ -1,15 +1,14 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class SQLReader {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         System.out.println("Input absolute path file separated by commas:");
         Scanner input = new Scanner(System.in);
         String inputPath = input.nextLine();
-        String pathArray[] = inputPath.split(",");
+        String[] pathArray = inputPath.split(",");
         SQLParser newSQLParser = new SQLParser();
 
         for (String path : pathArray) {

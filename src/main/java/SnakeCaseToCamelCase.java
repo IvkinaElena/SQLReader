@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class SnakeCaseToCamelCase {
@@ -26,7 +25,6 @@ public class SnakeCaseToCamelCase {
 
     //метод изменяет первую букву слова в верхний регистр
     private static String capitalize(String str) {
-        str = str.substring(0,1).toUpperCase() + str.substring(1);
-        return str;
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
