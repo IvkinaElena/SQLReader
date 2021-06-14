@@ -64,7 +64,7 @@ public class ClassesProducer {
         return "";
     }
 
-    private static String winPathWithPackage(String packageDirectory) {
+    private String winPathWithPackage(String packageDirectory) {
         return packageDirectory.replaceAll("\\.", "/");
     }
 
