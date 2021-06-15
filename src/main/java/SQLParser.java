@@ -11,7 +11,7 @@ public class SQLParser {
         this.allTables.put(table.trim(), params);
     }
 
-    public void getAllCreatedTableVWithColumns() {
+    public void printAllCreatedTableVWithColumns() {
         this.allTables.forEach((k, v) -> System.out.println(k + " : " + v));
     }
 

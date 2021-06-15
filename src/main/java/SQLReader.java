@@ -33,7 +33,7 @@ public class SQLReader {
             }
         }
 
-        newSQLParser.getAllCreatedTableVWithColumns();
+        newSQLParser.printAllCreatedTableVWithColumns();
 
         ClassesProducer classesProducer = new ClassesProducer();
         newSQLParser.getAllTables().forEach((k,v) -> classesProducer.createNewClass(k, v));
