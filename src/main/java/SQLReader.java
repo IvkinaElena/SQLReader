@@ -25,7 +25,7 @@ public class SQLReader {
                         }
                         statement = br.readLine();
                     } else
-                        statement += br.readLine();
+                        statement += br.readLine() + " ";
                 }
 
             } catch (IOException e) {
