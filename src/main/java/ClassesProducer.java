@@ -37,19 +37,19 @@ public class ClassesProducer {
         }
     }
 
-
     //Определение типа
-    private String typeField(String dataType){
-        if (dataType.toLowerCase().contains("char") ||
-                dataType.toLowerCase().contains("varchar") ||
-                dataType.toLowerCase().contains("text")) {
+    private String typeField(String dateType){
+        String dateTypeLowerCase = dateType.toLowerCase();
+        if (dateTypeLowerCase.contains("char") ||
+                dateTypeLowerCase.contains("varchar") ||
+                dateTypeLowerCase.contains("text")) {
             return "String";
-        } else if(dataType.toLowerCase().contains("int")) {
+        } else if(dateTypeLowerCase.contains("int")) {
             return "Integer";
-        } else if(dataType.toLowerCase().contains("date") ||
-                dataType.toLowerCase().contains("time")) {
+        } else if(dateTypeLowerCase.contains("date") ||
+                dateTypeLowerCase.contains("time")) {
             return "Instant";
-        } else if(dataType.toLowerCase().contains("double")) {
+        } else if(dateTypeLowerCase.contains("double")) {
             return "Double";
         }
         return "Object";
@@ -67,7 +67,5 @@ public class ClassesProducer {
     private String winPathWithPackage(String packageDirectory) {
         return packageDirectory.replaceAll("\\.", "/");
     }
-
-
 
 }
