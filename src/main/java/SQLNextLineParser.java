@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class SQLNextLineParser {
     private String tableName;
-    private final HashMap<String, String> mapOfNameAndType;
+    private final LinkedHashMap<String, String> mapOfNameAndType;
     private final Set<String> constraint = Stream.of("CONSTRAINT",
             "CHECK",
             "UNIQUE",
@@ -18,7 +18,7 @@ public class SQLNextLineParser {
             .collect(Collectors.toCollection(HashSet::new));
 
     public SQLNextLineParser(String statement) {
-        this.mapOfNameAndType = new HashMap<>();
+        this.mapOfNameAndType = new LinkedHashMap<>();
         setTableName(statement);
         setMapOfNameAndType(statement);
     }
